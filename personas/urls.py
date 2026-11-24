@@ -1,2 +1,8 @@
-# Las rutas del CRUD se agregan en la rama feature/personas
-urlpatterns = []
+from rest_framework.routers import SimpleRouter
+
+from .views import PersonaViewSet
+
+router = SimpleRouter()
+router.register("personas", PersonaViewSet, basename="persona")
+
+urlpatterns = router.urls
