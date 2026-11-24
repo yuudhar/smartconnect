@@ -1,0 +1,1137 @@
+[
+{
+  "model": "personas.persona",
+  "pk": 1,
+  "fields": {
+    "rut": "11.222.333-9",
+    "nombres": "Carlos",
+    "apellidos": "Muñoz Herrera",
+    "email": "carlos@smartconnect.test",
+    "telefono": "+56 9 1111 1111",
+    "activo": true,
+    "creado_en": "2026-11-24T19:11:03.497Z"
+  }
+},
+{
+  "model": "personas.persona",
+  "pk": 2,
+  "fields": {
+    "rut": "12.345.678-5",
+    "nombres": "Ana",
+    "apellidos": "Rojas Pinto",
+    "email": "ana@smartconnect.test",
+    "telefono": "+56 9 2222 2222",
+    "activo": true,
+    "creado_en": "2026-11-24T19:11:03.498Z"
+  }
+},
+{
+  "model": "personas.persona",
+  "pk": 3,
+  "fields": {
+    "rut": "19.876.543-0",
+    "nombres": "Benjamín",
+    "apellidos": "Soto Lagos",
+    "email": "benja@smartconnect.test",
+    "telefono": "+56 9 3333 3333",
+    "activo": true,
+    "creado_en": "2026-11-24T19:11:03.499Z"
+  }
+},
+{
+  "model": "personas.persona",
+  "pk": 4,
+  "fields": {
+    "rut": "17.654.321-3",
+    "nombres": "Sofía",
+    "apellidos": "Díaz Morales",
+    "email": "sofi@smartconnect.test",
+    "telefono": "+56 9 4444 4444",
+    "activo": true,
+    "creado_en": "2026-11-24T19:11:03.500Z"
+  }
+},
+{
+  "model": "personas.persona",
+  "pk": 5,
+  "fields": {
+    "rut": "10.987.654-2",
+    "nombres": "Pedro",
+    "apellidos": "Fuentes Vidal",
+    "email": "pedro@smartconnect.test",
+    "telefono": "+56 9 5555 5555",
+    "activo": true,
+    "creado_en": "2026-11-24T19:11:03.500Z"
+  }
+},
+{
+  "model": "personas.persona",
+  "pk": 6,
+  "fields": {
+    "rut": "21.345.678-4",
+    "nombres": "Ema",
+    "apellidos": "Fuentes Araya",
+    "email": "ema@smartconnect.test",
+    "telefono": null,
+    "activo": true,
+    "creado_en": "2026-11-24T19:11:03.501Z"
+  }
+},
+{
+  "model": "personas.persona",
+  "pk": 7,
+  "fields": {
+    "rut": "16.543.210-K",
+    "nombres": "Valentina",
+    "apellidos": "Pérez Castro",
+    "email": "vale@smartconnect.test",
+    "telefono": "+56 9 6666 6666",
+    "activo": true,
+    "creado_en": "2026-11-24T19:11:03.501Z"
+  }
+},
+{
+  "model": "personas.persona",
+  "pk": 8,
+  "fields": {
+    "rut": "20.123.456-5",
+    "nombres": "Lucas",
+    "apellidos": "Vera Ortiz",
+    "email": "lucas@smartconnect.test",
+    "telefono": "+56 9 7777 7777",
+    "activo": true,
+    "creado_en": "2026-11-24T19:11:03.502Z"
+  }
+},
+{
+  "model": "personas.credencial",
+  "pk": 1,
+  "fields": {
+    "uid": "04A1B2C3D4",
+    "persona": 2,
+    "tipo": "tarjeta",
+    "estado": "activa",
+    "fecha_emision": "2026-11-24"
+  }
+},
+{
+  "model": "personas.credencial",
+  "pk": 2,
+  "fields": {
+    "uid": "04A1B2C3D5",
+    "persona": 2,
+    "tipo": "llavero",
+    "estado": "activa",
+    "fecha_emision": "2026-11-24"
+  }
+},
+{
+  "model": "personas.credencial",
+  "pk": 3,
+  "fields": {
+    "uid": "04B7E8F9A0",
+    "persona": 3,
+    "tipo": "tarjeta",
+    "estado": "activa",
+    "fecha_emision": "2026-11-24"
+  }
+},
+{
+  "model": "personas.credencial",
+  "pk": 4,
+  "fields": {
+    "uid": "04C1D2E3F4",
+    "persona": 4,
+    "tipo": "tarjeta",
+    "estado": "activa",
+    "fecha_emision": "2026-11-24"
+  }
+},
+{
+  "model": "personas.credencial",
+  "pk": 5,
+  "fields": {
+    "uid": "04D5E6F7A8",
+    "persona": 5,
+    "tipo": "tarjeta",
+    "estado": "activa",
+    "fecha_emision": "2026-11-24"
+  }
+},
+{
+  "model": "personas.credencial",
+  "pk": 6,
+  "fields": {
+    "uid": "04E9F0A1B2",
+    "persona": 6,
+    "tipo": "llavero",
+    "estado": "activa",
+    "fecha_emision": "2026-11-24"
+  }
+},
+{
+  "model": "personas.credencial",
+  "pk": 7,
+  "fields": {
+    "uid": "04F3A4B5C6",
+    "persona": 7,
+    "tipo": "tarjeta",
+    "estado": "activa",
+    "fecha_emision": "2026-11-24"
+  }
+},
+{
+  "model": "personas.credencial",
+  "pk": 8,
+  "fields": {
+    "uid": "04A7B8C9D0",
+    "persona": 8,
+    "tipo": "tarjeta",
+    "estado": "bloqueada",
+    "fecha_emision": "2026-11-24"
+  }
+},
+{
+  "model": "personas.credencial",
+  "pk": 9,
+  "fields": {
+    "uid": "04B1C2D3E4",
+    "persona": 1,
+    "tipo": "tarjeta",
+    "estado": "activa",
+    "fecha_emision": "2026-11-24"
+  }
+},
+{
+  "model": "viviendas.terreno",
+  "pk": 1,
+  "fields": {
+    "codigo": "TR-ROBLES",
+    "nombre": "Condominio Los Robles",
+    "direccion": "Av. Los Robles 1500, Ñuñoa",
+    "administrador": 1,
+    "latitud": "-33.456900",
+    "longitud": "-70.597800",
+    "activo": true,
+    "creado_en": "2026-11-24T19:11:03.503Z"
+  }
+},
+{
+  "model": "viviendas.terreno",
+  "pk": 2,
+  "fields": {
+    "codigo": "TR-BOSQUE",
+    "nombre": "Condominio El Bosque",
+    "direccion": "Camino El Bosque 320, Peñalolén",
+    "administrador": 1,
+    "latitud": "-33.489100",
+    "longitud": "-70.548300",
+    "activo": true,
+    "creado_en": "2026-11-24T19:11:03.504Z"
+  }
+},
+{
+  "model": "viviendas.edificio",
+  "pk": 1,
+  "fields": {
+    "terreno": 1,
+    "nombre": "Torre A",
+    "pisos": 8,
+    "activo": true
+  }
+},
+{
+  "model": "viviendas.edificio",
+  "pk": 2,
+  "fields": {
+    "terreno": 1,
+    "nombre": "Torre B",
+    "pisos": 8,
+    "activo": true
+  }
+},
+{
+  "model": "viviendas.vivienda",
+  "pk": 1,
+  "fields": {
+    "codigo": "LR-A-101",
+    "tipo": "departamento",
+    "numero": "101",
+    "terreno": 1,
+    "edificio": 1,
+    "activa": true
+  }
+},
+{
+  "model": "viviendas.vivienda",
+  "pk": 2,
+  "fields": {
+    "codigo": "LR-A-102",
+    "tipo": "departamento",
+    "numero": "102",
+    "terreno": 1,
+    "edificio": 1,
+    "activa": true
+  }
+},
+{
+  "model": "viviendas.vivienda",
+  "pk": 3,
+  "fields": {
+    "codigo": "LR-B-201",
+    "tipo": "departamento",
+    "numero": "201",
+    "terreno": 1,
+    "edificio": 2,
+    "activa": true
+  }
+},
+{
+  "model": "viviendas.vivienda",
+  "pk": 4,
+  "fields": {
+    "codigo": "EB-C-07",
+    "tipo": "casa",
+    "numero": "7",
+    "terreno": 2,
+    "edificio": null,
+    "activa": true
+  }
+},
+{
+  "model": "viviendas.vivienda",
+  "pk": 5,
+  "fields": {
+    "codigo": "EB-C-03",
+    "tipo": "casa",
+    "numero": "3",
+    "terreno": 2,
+    "edificio": null,
+    "activa": true
+  }
+},
+{
+  "model": "accesos.rol",
+  "pk": 1,
+  "fields": {
+    "nombre": "propietario_admin",
+    "descripcion": "Dueño que administra las personas de su vivienda",
+    "ambito": "vivienda",
+    "puede_otorgar": true
+  }
+},
+{
+  "model": "accesos.rol",
+  "pk": 2,
+  "fields": {
+    "nombre": "propietario",
+    "descripcion": "Copropietario de la vivienda",
+    "ambito": "vivienda",
+    "puede_otorgar": false
+  }
+},
+{
+  "model": "accesos.rol",
+  "pk": 3,
+  "fields": {
+    "nombre": "arrendatario",
+    "descripcion": "Arrienda la vivienda",
+    "ambito": "vivienda",
+    "puede_otorgar": false
+  }
+},
+{
+  "model": "accesos.rol",
+  "pk": 4,
+  "fields": {
+    "nombre": "residente",
+    "descripcion": "Convive en la vivienda sin ser dueño ni arrendatario",
+    "ambito": "vivienda",
+    "puede_otorgar": false
+  }
+},
+{
+  "model": "accesos.rol",
+  "pk": 5,
+  "fields": {
+    "nombre": "trabajador",
+    "descripcion": "Trabaja en el terreno (conserje, guardia, jardinero)",
+    "ambito": "terreno",
+    "puede_otorgar": false
+  }
+},
+{
+  "model": "accesos.puntoacceso",
+  "pk": 1,
+  "fields": {
+    "nombre": "Peatonal Norte",
+    "tipo": "peatonal",
+    "terreno": 1,
+    "edificio": null,
+    "vivienda": null,
+    "latitud": "-33.456700",
+    "longitud": "-70.597900",
+    "activo": true
+  }
+},
+{
+  "model": "accesos.puntoacceso",
+  "pk": 2,
+  "fields": {
+    "nombre": "Reja Vehicular",
+    "tipo": "vehicular",
+    "terreno": 1,
+    "edificio": null,
+    "vivienda": null,
+    "latitud": null,
+    "longitud": null,
+    "activo": true
+  }
+},
+{
+  "model": "accesos.puntoacceso",
+  "pk": 3,
+  "fields": {
+    "nombre": "Portón Sur",
+    "tipo": "vehicular",
+    "terreno": 1,
+    "edificio": null,
+    "vivienda": null,
+    "latitud": null,
+    "longitud": null,
+    "activo": true
+  }
+},
+{
+  "model": "accesos.puntoacceso",
+  "pk": 4,
+  "fields": {
+    "nombre": "Hall Torre A",
+    "tipo": "puerta",
+    "terreno": 1,
+    "edificio": 1,
+    "vivienda": null,
+    "latitud": null,
+    "longitud": null,
+    "activo": true
+  }
+},
+{
+  "model": "accesos.puntoacceso",
+  "pk": 5,
+  "fields": {
+    "nombre": "Hall Torre B",
+    "tipo": "puerta",
+    "terreno": 1,
+    "edificio": 2,
+    "vivienda": null,
+    "latitud": null,
+    "longitud": null,
+    "activo": true
+  }
+},
+{
+  "model": "accesos.puntoacceso",
+  "pk": 6,
+  "fields": {
+    "nombre": "Puerta A-101",
+    "tipo": "puerta",
+    "terreno": 1,
+    "edificio": null,
+    "vivienda": 1,
+    "latitud": null,
+    "longitud": null,
+    "activo": true
+  }
+},
+{
+  "model": "accesos.puntoacceso",
+  "pk": 7,
+  "fields": {
+    "nombre": "Puerta A-102",
+    "tipo": "puerta",
+    "terreno": 1,
+    "edificio": null,
+    "vivienda": 2,
+    "latitud": null,
+    "longitud": null,
+    "activo": true
+  }
+},
+{
+  "model": "accesos.puntoacceso",
+  "pk": 8,
+  "fields": {
+    "nombre": "Portón Principal",
+    "tipo": "vehicular",
+    "terreno": 2,
+    "edificio": null,
+    "vivienda": null,
+    "latitud": null,
+    "longitud": null,
+    "activo": true
+  }
+},
+{
+  "model": "accesos.puntoacceso",
+  "pk": 9,
+  "fields": {
+    "nombre": "Peatonal El Bosque",
+    "tipo": "peatonal",
+    "terreno": 2,
+    "edificio": null,
+    "vivienda": null,
+    "latitud": null,
+    "longitud": null,
+    "activo": true
+  }
+},
+{
+  "model": "accesos.puntoacceso",
+  "pk": 10,
+  "fields": {
+    "nombre": "Puerta Casa 7",
+    "tipo": "puerta",
+    "terreno": 2,
+    "edificio": null,
+    "vivienda": 4,
+    "latitud": null,
+    "longitud": null,
+    "activo": true
+  }
+},
+{
+  "model": "accesos.autorizacion",
+  "pk": 1,
+  "fields": {
+    "persona": 2,
+    "terreno": 1,
+    "vivienda": 1,
+    "rol": 1,
+    "otorgada_por": null,
+    "fecha_inicio": "2026-11-24",
+    "fecha_fin": null,
+    "activa": true
+  }
+},
+{
+  "model": "accesos.autorizacion",
+  "pk": 2,
+  "fields": {
+    "persona": 2,
+    "terreno": 1,
+    "vivienda": 2,
+    "rol": 1,
+    "otorgada_por": null,
+    "fecha_inicio": "2026-11-24",
+    "fecha_fin": null,
+    "activa": true
+  }
+},
+{
+  "model": "accesos.autorizacion",
+  "pk": 3,
+  "fields": {
+    "persona": 3,
+    "terreno": 1,
+    "vivienda": 1,
+    "rol": 3,
+    "otorgada_por": 2,
+    "fecha_inicio": "2026-11-24",
+    "fecha_fin": null,
+    "activa": true
+  }
+},
+{
+  "model": "accesos.autorizacion",
+  "pk": 4,
+  "fields": {
+    "persona": 3,
+    "terreno": 2,
+    "vivienda": 5,
+    "rol": 1,
+    "otorgada_por": null,
+    "fecha_inicio": "2026-11-24",
+    "fecha_fin": null,
+    "activa": true
+  }
+},
+{
+  "model": "accesos.autorizacion",
+  "pk": 5,
+  "fields": {
+    "persona": 4,
+    "terreno": 1,
+    "vivienda": null,
+    "rol": 5,
+    "otorgada_por": 1,
+    "fecha_inicio": "2026-11-24",
+    "fecha_fin": null,
+    "activa": true
+  }
+},
+{
+  "model": "accesos.autorizacion",
+  "pk": 6,
+  "fields": {
+    "persona": 5,
+    "terreno": 2,
+    "vivienda": 4,
+    "rol": 1,
+    "otorgada_por": null,
+    "fecha_inicio": "2026-11-24",
+    "fecha_fin": null,
+    "activa": true
+  }
+},
+{
+  "model": "accesos.autorizacion",
+  "pk": 7,
+  "fields": {
+    "persona": 6,
+    "terreno": 2,
+    "vivienda": 4,
+    "rol": 4,
+    "otorgada_por": 5,
+    "fecha_inicio": "2026-11-24",
+    "fecha_fin": null,
+    "activa": true
+  }
+},
+{
+  "model": "accesos.autorizacion",
+  "pk": 8,
+  "fields": {
+    "persona": 7,
+    "terreno": 1,
+    "vivienda": 3,
+    "rol": 1,
+    "otorgada_por": null,
+    "fecha_inicio": "2026-11-24",
+    "fecha_fin": null,
+    "activa": true
+  }
+},
+{
+  "model": "accesos.autorizacion",
+  "pk": 9,
+  "fields": {
+    "persona": 8,
+    "terreno": 1,
+    "vivienda": 3,
+    "rol": 3,
+    "otorgada_por": 7,
+    "fecha_inicio": "2025-11-24",
+    "fecha_fin": "2026-11-14",
+    "activa": true
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 1,
+  "fields": {
+    "autorizacion": 1,
+    "punto_acceso": 1
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 2,
+  "fields": {
+    "autorizacion": 1,
+    "punto_acceso": 2
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 3,
+  "fields": {
+    "autorizacion": 1,
+    "punto_acceso": 3
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 4,
+  "fields": {
+    "autorizacion": 1,
+    "punto_acceso": 4
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 5,
+  "fields": {
+    "autorizacion": 1,
+    "punto_acceso": 6
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 6,
+  "fields": {
+    "autorizacion": 2,
+    "punto_acceso": 1
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 7,
+  "fields": {
+    "autorizacion": 2,
+    "punto_acceso": 2
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 8,
+  "fields": {
+    "autorizacion": 2,
+    "punto_acceso": 4
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 9,
+  "fields": {
+    "autorizacion": 2,
+    "punto_acceso": 7
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 10,
+  "fields": {
+    "autorizacion": 3,
+    "punto_acceso": 1
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 11,
+  "fields": {
+    "autorizacion": 3,
+    "punto_acceso": 2
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 12,
+  "fields": {
+    "autorizacion": 3,
+    "punto_acceso": 4
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 13,
+  "fields": {
+    "autorizacion": 3,
+    "punto_acceso": 6
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 14,
+  "fields": {
+    "autorizacion": 4,
+    "punto_acceso": 8
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 15,
+  "fields": {
+    "autorizacion": 4,
+    "punto_acceso": 9
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 16,
+  "fields": {
+    "autorizacion": 5,
+    "punto_acceso": 1
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 17,
+  "fields": {
+    "autorizacion": 5,
+    "punto_acceso": 4
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 18,
+  "fields": {
+    "autorizacion": 5,
+    "punto_acceso": 5
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 19,
+  "fields": {
+    "autorizacion": 6,
+    "punto_acceso": 8
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 20,
+  "fields": {
+    "autorizacion": 6,
+    "punto_acceso": 9
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 21,
+  "fields": {
+    "autorizacion": 6,
+    "punto_acceso": 10
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 22,
+  "fields": {
+    "autorizacion": 7,
+    "punto_acceso": 9
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 23,
+  "fields": {
+    "autorizacion": 7,
+    "punto_acceso": 10
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 24,
+  "fields": {
+    "autorizacion": 8,
+    "punto_acceso": 1
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 25,
+  "fields": {
+    "autorizacion": 8,
+    "punto_acceso": 2
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 26,
+  "fields": {
+    "autorizacion": 8,
+    "punto_acceso": 5
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 27,
+  "fields": {
+    "autorizacion": 9,
+    "punto_acceso": 1
+  }
+},
+{
+  "model": "accesos.autorizacionpunto",
+  "pk": 28,
+  "fields": {
+    "autorizacion": 9,
+    "punto_acceso": 5
+  }
+},
+{
+  "model": "accesos.registroacceso",
+  "pk": 1,
+  "fields": {
+    "fecha_hora": "2026-11-23T10:55:00Z",
+    "punto_acceso": 1,
+    "sentido": "entrada",
+    "medio": "rfid",
+    "persona": 4,
+    "credencial": 4,
+    "uid_recibido": "04C1D2E3F4",
+    "autorizacion": 5,
+    "resultado": "permitido",
+    "motivo": null,
+    "distancia_m": null
+  }
+},
+{
+  "model": "accesos.registroacceso",
+  "pk": 2,
+  "fields": {
+    "fecha_hora": "2026-11-23T11:02:00Z",
+    "punto_acceso": 5,
+    "sentido": "entrada",
+    "medio": "rfid",
+    "persona": 4,
+    "credencial": 4,
+    "uid_recibido": "04C1D2E3F4",
+    "autorizacion": 5,
+    "resultado": "permitido",
+    "motivo": null,
+    "distancia_m": null
+  }
+},
+{
+  "model": "accesos.registroacceso",
+  "pk": 3,
+  "fields": {
+    "fecha_hora": "2026-11-23T11:30:00Z",
+    "punto_acceso": 2,
+    "sentido": "entrada",
+    "medio": "rfid",
+    "persona": 4,
+    "credencial": 4,
+    "uid_recibido": "04C1D2E3F4",
+    "autorizacion": null,
+    "resultado": "denegado",
+    "motivo": "Punto de acceso no autorizado",
+    "distancia_m": null
+  }
+},
+{
+  "model": "accesos.registroacceso",
+  "pk": 4,
+  "fields": {
+    "fecha_hora": "2026-11-23T11:45:00Z",
+    "punto_acceso": 6,
+    "sentido": "salida",
+    "medio": "rfid",
+    "persona": 2,
+    "credencial": 1,
+    "uid_recibido": "04A1B2C3D4",
+    "autorizacion": 1,
+    "resultado": "permitido",
+    "motivo": null,
+    "distancia_m": null
+  }
+},
+{
+  "model": "accesos.registroacceso",
+  "pk": 5,
+  "fields": {
+    "fecha_hora": "2026-11-23T12:10:00Z",
+    "punto_acceso": 2,
+    "sentido": "entrada",
+    "medio": "app",
+    "persona": 3,
+    "credencial": null,
+    "uid_recibido": null,
+    "autorizacion": 3,
+    "resultado": "permitido",
+    "motivo": null,
+    "distancia_m": "12.50"
+  }
+},
+{
+  "model": "accesos.registroacceso",
+  "pk": 6,
+  "fields": {
+    "fecha_hora": "2026-11-23T16:20:00Z",
+    "punto_acceso": 1,
+    "sentido": "entrada",
+    "medio": "rfid",
+    "persona": null,
+    "credencial": null,
+    "uid_recibido": "04FFFFFFFF",
+    "autorizacion": null,
+    "resultado": "denegado",
+    "motivo": "Credencial desconocida",
+    "distancia_m": null
+  }
+},
+{
+  "model": "accesos.registroacceso",
+  "pk": 7,
+  "fields": {
+    "fecha_hora": "2026-11-23T17:05:00Z",
+    "punto_acceso": 1,
+    "sentido": "entrada",
+    "medio": "rfid",
+    "persona": 8,
+    "credencial": 8,
+    "uid_recibido": "04A7B8C9D0",
+    "autorizacion": null,
+    "resultado": "denegado",
+    "motivo": "Credencial bloqueada",
+    "distancia_m": null
+  }
+},
+{
+  "model": "accesos.registroacceso",
+  "pk": 8,
+  "fields": {
+    "fecha_hora": "2026-11-23T17:07:00Z",
+    "punto_acceso": 1,
+    "sentido": "entrada",
+    "medio": "app",
+    "persona": 8,
+    "credencial": null,
+    "uid_recibido": null,
+    "autorizacion": null,
+    "resultado": "denegado",
+    "motivo": "Autorización vencida",
+    "distancia_m": "8.00"
+  }
+},
+{
+  "model": "accesos.registroacceso",
+  "pk": 9,
+  "fields": {
+    "fecha_hora": "2026-11-23T21:40:00Z",
+    "punto_acceso": 9,
+    "sentido": "entrada",
+    "medio": "rfid",
+    "persona": 6,
+    "credencial": 6,
+    "uid_recibido": "04E9F0A1B2",
+    "autorizacion": 7,
+    "resultado": "permitido",
+    "motivo": null,
+    "distancia_m": null
+  }
+},
+{
+  "model": "accesos.registroacceso",
+  "pk": 10,
+  "fields": {
+    "fecha_hora": "2026-11-23T21:41:00Z",
+    "punto_acceso": 10,
+    "sentido": "entrada",
+    "medio": "rfid",
+    "persona": 6,
+    "credencial": 6,
+    "uid_recibido": "04E9F0A1B2",
+    "autorizacion": 7,
+    "resultado": "permitido",
+    "motivo": null,
+    "distancia_m": null
+  }
+},
+{
+  "model": "accesos.registroacceso",
+  "pk": 11,
+  "fields": {
+    "fecha_hora": "2026-11-23T22:15:00Z",
+    "punto_acceso": 8,
+    "sentido": "entrada",
+    "medio": "app",
+    "persona": 6,
+    "credencial": null,
+    "uid_recibido": null,
+    "autorizacion": null,
+    "resultado": "denegado",
+    "motivo": "Punto de acceso no autorizado",
+    "distancia_m": "5.20"
+  }
+},
+{
+  "model": "accesos.registroacceso",
+  "pk": 12,
+  "fields": {
+    "fecha_hora": "2026-11-23T23:00:00Z",
+    "punto_acceso": 8,
+    "sentido": "entrada",
+    "medio": "app",
+    "persona": 3,
+    "credencial": null,
+    "uid_recibido": null,
+    "autorizacion": 4,
+    "resultado": "permitido",
+    "motivo": null,
+    "distancia_m": "30.00"
+  }
+},
+{
+  "model": "accesos.registroacceso",
+  "pk": 13,
+  "fields": {
+    "fecha_hora": "2026-11-24T00:30:00Z",
+    "punto_acceso": 9,
+    "sentido": "entrada",
+    "medio": "app",
+    "persona": 5,
+    "credencial": null,
+    "uid_recibido": null,
+    "autorizacion": null,
+    "resultado": "denegado",
+    "motivo": "Fuera del rango de cercanía",
+    "distancia_m": "850.00"
+  }
+},
+{
+  "model": "accesos.aperturadispositivo",
+  "pk": 1,
+  "fields": {
+    "registro": 1,
+    "fecha_hora": "2026-11-23T10:55:02Z",
+    "estado": "abrio"
+  }
+},
+{
+  "model": "accesos.aperturadispositivo",
+  "pk": 2,
+  "fields": {
+    "registro": 2,
+    "fecha_hora": "2026-11-23T11:02:02Z",
+    "estado": "abrio"
+  }
+},
+{
+  "model": "accesos.aperturadispositivo",
+  "pk": 3,
+  "fields": {
+    "registro": 4,
+    "fecha_hora": "2026-11-23T11:45:02Z",
+    "estado": "abrio"
+  }
+},
+{
+  "model": "accesos.aperturadispositivo",
+  "pk": 4,
+  "fields": {
+    "registro": 5,
+    "fecha_hora": "2026-11-23T12:10:02Z",
+    "estado": "sin_respuesta"
+  }
+},
+{
+  "model": "accesos.aperturadispositivo",
+  "pk": 5,
+  "fields": {
+    "registro": 9,
+    "fecha_hora": "2026-11-23T21:40:02Z",
+    "estado": "abrio"
+  }
+},
+{
+  "model": "accesos.aperturadispositivo",
+  "pk": 6,
+  "fields": {
+    "registro": 10,
+    "fecha_hora": "2026-11-23T21:41:02Z",
+    "estado": "abrio"
+  }
+},
+{
+  "model": "accesos.aperturadispositivo",
+  "pk": 7,
+  "fields": {
+    "registro": 12,
+    "fecha_hora": "2026-11-23T23:00:02Z",
+    "estado": "abrio"
+  }
+}
+]
