@@ -1,3 +1,4 @@
+from django.db.models import Q
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 
 from config.protegido import BorradoProtegidoMixin
@@ -25,11 +26,22 @@ class ViviendaViewSet(BorradoProtegidoMixin, ModelViewSet):
         return qs
 
 
-class TerrenoViewSet(ReadOnlyModelViewSet):
-    """Solo lectura: para consultar los id de terreno al crear viviendas."""
+class TerrenoViewSet(BorradoProtegidoMixin, ModelViewSet):
+    """CRUD de terrenos. Filtros: ?buscar=texto (código, nombre o dirección), ?administrador=<id>, ?activo=true|false."""
 
-    queryset = Terreno.objects.select_related("administrador").order_by("id")
     serializer_class = TerrenoSerializer
+
+    def get_queryset(self):
+        qs = Terreno.objects.select_related("administrador").prefetch_related("edificios").order_by("id")
+        p = self.request.query_params
+        if p.get("buscar"):
+            qs = qs.filter(Q(codigo__icontains=p["buscar"]) | Q(nombre__icontains=p["buscar"])
+                           | Q(direccion__icontains=p["buscar"]))
+        if p.get("administrador", "").isdigit():
+            qs = qs.filter(administrador_id=int(p["administrador"]))
+        if p.get("activo") in ("true", "false"):
+            qs = qs.filter(activo=(p["activo"] == "true"))
+        return qs
 
 
 class EdificioViewSet(ReadOnlyModelViewSet):
