@@ -8,4 +8,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include("personas.urls")),   # CRUD Integrante 1
     path("api/", include("viviendas.urls")),  # CRUD Integrante 2
+    path("api/", include("accesos.urls")),    # CRUD de puntos de acceso
 ]
