@@ -1,14 +1,14 @@
 # SmartConnect · API de acceso residencial
 
-Proyecto de Programación Back End (TI3041) · Unidad 3 · Entrega 1.
+Proyecto de Programación Back End
 API REST con **Django** y **Django REST Framework**, probada en Apidog.
 
-**Equipo (pareja):**
+**Equipo:**
 
 | Integrante | Módulo (CRUD) | Rama |
 |---|---|---|
-| Integrante 1 | Personas | `feature/personas` |
-| Integrante 2 | Viviendas | `feature/viviendas` |
+| Matias Cavieres | Personas | `feature/personas` |
+| Matias Quiroz | Viviendas | `feature/viviendas` |
 
 ---
 
@@ -230,8 +230,8 @@ Para ver los datos en el admin de Django: `python manage.py createsuperuser` y d
 
 | Integrante | Recurso | Rutas |
 |---|---|---|
-| Integrante 1 | **Personas** | `GET/POST /api/personas/` · `GET/PUT/PATCH/DELETE /api/personas/{id}/` |
-| Integrante 2 | **Viviendas** | `GET/POST /api/viviendas/` · `GET/PUT/PATCH/DELETE /api/viviendas/{id}/` |
+| Matias Cavieres | **Personas** | `GET/POST /api/personas/` · `GET/PUT/PATCH/DELETE /api/personas/{id}/` |
+| Matias Quiroz | **Viviendas** | `GET/POST /api/viviendas/` · `GET/PUT/PATCH/DELETE /api/viviendas/{id}/` |
 | Apoyo | Terrenos y edificios (solo lectura) | `GET /api/terrenos/` · `GET /api/edificios/` |
 
 Filtros: `/api/personas/?buscar=texto&activo=true` · `/api/viviendas/?terreno=1&edificio=1&tipo=casa&activa=true`.
@@ -258,7 +258,7 @@ Archivo: [`docs/apidog_smartconnect_entrega1.json`](docs/apidog_smartconnect_ent
 2. En Apidog: **Import → Postman** → elegir el archivo.
 3. Ejecutar cada carpeta **en orden**. El POST guarda el id creado en `{{persona_id}}` / `{{vivienda_id}}`, y cada petición trae un test que revisa el código de estado.
 
-| Personas (Integrante 1) | Código | Viviendas (Integrante 2) | Código |
+| Personas Matias Cavieres | Código | Viviendas Matias Quiroz | Código |
 |---|---|---|---|
 | 01 Listar | 200 | 01 Listar | 200 |
 | 02 Buscar `?buscar=fuentes` | 200 | 02 Filtrar `?tipo=casa` | 200 |
