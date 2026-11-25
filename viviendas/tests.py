@@ -1,4 +1,5 @@
 import io
+from django.contrib.auth import get_user_model
 from django.core.management import call_command
 from rest_framework.test import APITestCase
 
@@ -14,6 +15,10 @@ class ViviendaCrudTests(APITestCase):
         cls.robles = Terreno.objects.get(codigo="TR-ROBLES")
         cls.bosque = Terreno.objects.get(codigo="TR-BOSQUE")
         cls.torre_a = Edificio.objects.get(nombre="Torre A")
+
+    def setUp(self):
+        # Estas pruebas revisan el CRUD, no la seguridad: entran como personal de SmartConnect
+        self.client.force_authenticate(get_user_model().objects.get(username="soporte"))
 
     def test_listar_y_filtrar(self):
         self.assertEqual(len(self.client.get(URL).json()), 5)

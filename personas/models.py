@@ -1,5 +1,6 @@
 from datetime import date
 
+from django.conf import settings
 from django.db import models
 
 
@@ -13,6 +14,10 @@ class Persona(models.Model):
     telefono = models.CharField(max_length=20, null=True, blank=True)
     activo = models.BooleanField(default=True)
     creado_en = models.DateTimeField(auto_now_add=True)
+    usuario = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True, related_name="persona",
+        help_text="Cuenta de login de esta persona (se crea en Django Admin).",
+    )
 
     class Meta:
         ordering = ["apellidos", "nombres"]

@@ -1,3 +1,6 @@
+import io
+
+from django.contrib.auth import get_user_model
 from django.core.management import call_command
 from rest_framework.test import APITestCase
 
@@ -9,7 +12,11 @@ URL = "/api/personas/"
 class PersonaCrudTests(APITestCase):
     @classmethod
     def setUpTestData(cls):
-        call_command("cargar_datos", stdout=open("/dev/null", "w"))
+        call_command("cargar_datos", stdout=io.StringIO())
+
+    def setUp(self):
+        # Estas pruebas revisan el CRUD, no la seguridad: entran como personal de SmartConnect
+        self.client.force_authenticate(get_user_model().objects.get(username="soporte"))
 
     def test_listar(self):
         r = self.client.get(URL)

@@ -1,4 +1,4 @@
-"""Carga datos ficticios para la Entrega 1 de SmartConnect.
+"""Carga datos ficticios de SmartConnect (Entrega 1 y 2: incluye cuentas de login).
 
 Uso:
     python manage.py cargar_datos          # solo si la BD está vacía
@@ -7,6 +7,8 @@ Uso:
 from datetime import date, datetime, timedelta
 from decimal import Decimal
 
+from django.contrib.auth import get_user_model
+from django.contrib.auth.hashers import make_password
 from django.core.management.base import BaseCommand, CommandError
 from django.core.management.color import no_style
 from django.db import connection, transaction
@@ -26,6 +28,9 @@ def rut_con_dv(numero: int) -> str:
     dv = 11 - suma % 11
     dv = "0" if dv == 11 else "K" if dv == 10 else str(dv)
     return f"{numero:,}".replace(",", ".") + f"-{dv}"
+
+
+CLAVE_PRUEBA = "smart1234"   # contraseña de las cuentas ficticias (solo para desarrollo y pruebas)
 
 
 def crear(modelo, **campos):
@@ -209,6 +214,22 @@ class Command(BaseCommand):
         intento(21, 30, "peatonal_bosque", "app", "denegado", "pedro", motivo="Fuera del rango de cercanía",
                 distancia=Decimal("850.00"))
 
+        # ---------- Cuentas de login (JWT) ----------
+        # El username es la clave de la persona (ana, benja...). "soporte" es personal de SmartConnect.
+        User = get_user_model()
+        clave_hash = make_password(CLAVE_PRUEBA)   # se calcula una vez: todas las cuentas usan la misma clave
+        for clave, persona in p.items():
+            user, _ = User.objects.get_or_create(username=clave, defaults={"email": persona.email})
+            user.password = clave_hash
+            user.is_active, user.is_staff, user.is_superuser = True, False, False
+            user.save()
+            persona.usuario = user
+            persona.save(update_fields=["usuario"])
+        soporte, _ = User.objects.get_or_create(username="soporte", defaults={"email": "soporte@smartconnect.test"})
+        soporte.password = clave_hash
+        soporte.is_active, soporte.is_staff, soporte.is_superuser = True, True, True
+        soporte.save()
+
         resumen = {
             "personas": Persona.objects.count(), "credenciales": Credencial.objects.count(),
             "terrenos": Terreno.objects.count(), "edificios": Edificio.objects.count(),
@@ -216,7 +237,9 @@ class Command(BaseCommand):
             "puntos de acceso": PuntoAcceso.objects.count(), "autorizaciones": Autorizacion.objects.count(),
             "puntos permitidos": AutorizacionPunto.objects.count(), "registros": RegistroAcceso.objects.count(),
             "aperturas": AperturaDispositivo.objects.count(),
+            "cuentas (login)": len(p) + 1,
         }
         for k, n in resumen.items():
             self.stdout.write(f"  {k:<18} {n}")
         self.stdout.write(self.style.SUCCESS("Datos ficticios cargados."))
+        self.stdout.write(f"Cuentas de prueba: {', '.join(p)} y soporte (personal). Contraseña: {CLAVE_PRUEBA}")
