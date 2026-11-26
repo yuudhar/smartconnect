@@ -1,4 +1,5 @@
--- SmartConnect · Esquema inicial (SQLite) generado desde las migraciones de Django
+-- SmartConnect · Esquema (SQLite) generado desde las migraciones de Django
+-- Entrega 2: personas_persona incluye usuario_id (cuenta de login, tabla auth_user de Django)
 -- Regenerar: python manage.py migrate  (las tablas de Django auth/admin se omiten)
 
 CREATE TABLE "accesos_aperturadispositivo" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "fecha_hora" datetime NOT NULL, "estado" varchar(15) NOT NULL, "registro_id" bigint NOT NULL UNIQUE REFERENCES "accesos_registroacceso" ("id") DEFERRABLE INITIALLY DEFERRED);
@@ -15,7 +16,7 @@ CREATE TABLE "accesos_rol" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "no
 
 CREATE TABLE "personas_credencial" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "uid" varchar(32) NOT NULL UNIQUE, "tipo" varchar(10) NOT NULL, "estado" varchar(10) NOT NULL, "fecha_emision" date NOT NULL, "persona_id" bigint NOT NULL REFERENCES "personas_persona" ("id") DEFERRABLE INITIALLY DEFERRED);
 
-CREATE TABLE "personas_persona" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "rut" varchar(12) NOT NULL UNIQUE, "nombres" varchar(80) NOT NULL, "apellidos" varchar(80) NOT NULL, "email" varchar(254) NOT NULL UNIQUE, "telefono" varchar(20) NULL, "activo" bool NOT NULL, "creado_en" datetime NOT NULL);
+CREATE TABLE "personas_persona" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "rut" varchar(12) NOT NULL UNIQUE, "nombres" varchar(80) NOT NULL, "apellidos" varchar(80) NOT NULL, "email" varchar(254) NOT NULL UNIQUE, "telefono" varchar(20) NULL, "activo" bool NOT NULL, "creado_en" datetime NOT NULL, "usuario_id" integer NULL UNIQUE REFERENCES "auth_user" ("id") DEFERRABLE INITIALLY DEFERRED);
 
 CREATE TABLE "viviendas_edificio" ("id" integer NOT NULL PRIMARY KEY AUTOINCREMENT, "nombre" varchar(50) NOT NULL, "pisos" smallint unsigned NOT NULL CHECK ("pisos" >= 0), "activo" bool NOT NULL, "terreno_id" bigint NOT NULL REFERENCES "viviendas_terreno" ("id") DEFERRABLE INITIALLY DEFERRED, CONSTRAINT "edificio_nombre_unico_por_terreno" UNIQUE ("terreno_id", "nombre"));
 

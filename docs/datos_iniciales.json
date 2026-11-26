@@ -1,5 +1,167 @@
 [
 {
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$M9J4A5tntklqss9D2xiURU$CTMe9ryr1/9QDcAw+i2YPwolLSohfqTRTSDwI/6poY8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "carlos",
+    "first_name": "",
+    "last_name": "",
+    "email": "carlos@smartconnect.test",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-11-26T02:40:32.636Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$M9J4A5tntklqss9D2xiURU$CTMe9ryr1/9QDcAw+i2YPwolLSohfqTRTSDwI/6poY8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "ana",
+    "first_name": "",
+    "last_name": "",
+    "email": "ana@smartconnect.test",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-11-26T02:40:32.637Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$M9J4A5tntklqss9D2xiURU$CTMe9ryr1/9QDcAw+i2YPwolLSohfqTRTSDwI/6poY8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "benja",
+    "first_name": "",
+    "last_name": "",
+    "email": "benja@smartconnect.test",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-11-26T02:40:32.638Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$M9J4A5tntklqss9D2xiURU$CTMe9ryr1/9QDcAw+i2YPwolLSohfqTRTSDwI/6poY8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "sofi",
+    "first_name": "",
+    "last_name": "",
+    "email": "sofi@smartconnect.test",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-11-26T02:40:32.639Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$M9J4A5tntklqss9D2xiURU$CTMe9ryr1/9QDcAw+i2YPwolLSohfqTRTSDwI/6poY8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "pedro",
+    "first_name": "",
+    "last_name": "",
+    "email": "pedro@smartconnect.test",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-11-26T02:40:32.640Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$M9J4A5tntklqss9D2xiURU$CTMe9ryr1/9QDcAw+i2YPwolLSohfqTRTSDwI/6poY8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "ema",
+    "first_name": "",
+    "last_name": "",
+    "email": "ema@smartconnect.test",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-11-26T02:40:32.641Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$M9J4A5tntklqss9D2xiURU$CTMe9ryr1/9QDcAw+i2YPwolLSohfqTRTSDwI/6poY8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "vale",
+    "first_name": "",
+    "last_name": "",
+    "email": "vale@smartconnect.test",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-11-26T02:40:32.642Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 8,
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$M9J4A5tntklqss9D2xiURU$CTMe9ryr1/9QDcAw+i2YPwolLSohfqTRTSDwI/6poY8=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "lucas",
+    "first_name": "",
+    "last_name": "",
+    "email": "lucas@smartconnect.test",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-11-26T02:40:32.643Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "pk": 9,
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$M9J4A5tntklqss9D2xiURU$CTMe9ryr1/9QDcAw+i2YPwolLSohfqTRTSDwI/6poY8=",
+    "last_login": null,
+    "is_superuser": true,
+    "username": "soporte",
+    "first_name": "",
+    "last_name": "",
+    "email": "soporte@smartconnect.test",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-11-26T02:40:32.644Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
   "model": "personas.persona",
   "pk": 1,
   "fields": {
@@ -9,7 +171,8 @@
     "email": "carlos@smartconnect.test",
     "telefono": "+56 9 1111 1111",
     "activo": true,
-    "creado_en": "2026-11-24T19:11:03.497Z"
+    "creado_en": "2026-11-26T02:51:36.844Z",
+    "usuario": 1
   }
 },
 {
@@ -22,7 +185,8 @@
     "email": "ana@smartconnect.test",
     "telefono": "+56 9 2222 2222",
     "activo": true,
-    "creado_en": "2026-11-24T19:11:03.498Z"
+    "creado_en": "2026-11-26T02:51:36.844Z",
+    "usuario": 2
   }
 },
 {
@@ -35,7 +199,8 @@
     "email": "benja@smartconnect.test",
     "telefono": "+56 9 3333 3333",
     "activo": true,
-    "creado_en": "2026-11-24T19:11:03.499Z"
+    "creado_en": "2026-11-26T02:51:36.845Z",
+    "usuario": 3
   }
 },
 {
@@ -48,7 +213,8 @@
     "email": "sofi@smartconnect.test",
     "telefono": "+56 9 4444 4444",
     "activo": true,
-    "creado_en": "2026-11-24T19:11:03.500Z"
+    "creado_en": "2026-11-26T02:51:36.846Z",
+    "usuario": 4
   }
 },
 {
@@ -61,7 +227,8 @@
     "email": "pedro@smartconnect.test",
     "telefono": "+56 9 5555 5555",
     "activo": true,
-    "creado_en": "2026-11-24T19:11:03.500Z"
+    "creado_en": "2026-11-26T02:51:36.846Z",
+    "usuario": 5
   }
 },
 {
@@ -74,7 +241,8 @@
     "email": "ema@smartconnect.test",
     "telefono": null,
     "activo": true,
-    "creado_en": "2026-11-24T19:11:03.501Z"
+    "creado_en": "2026-11-26T02:51:36.847Z",
+    "usuario": 6
   }
 },
 {
@@ -87,7 +255,8 @@
     "email": "vale@smartconnect.test",
     "telefono": "+56 9 6666 6666",
     "activo": true,
-    "creado_en": "2026-11-24T19:11:03.501Z"
+    "creado_en": "2026-11-26T02:51:36.847Z",
+    "usuario": 7
   }
 },
 {
@@ -100,7 +269,8 @@
     "email": "lucas@smartconnect.test",
     "telefono": "+56 9 7777 7777",
     "activo": true,
-    "creado_en": "2026-11-24T19:11:03.502Z"
+    "creado_en": "2026-11-26T02:51:36.848Z",
+    "usuario": 8
   }
 },
 {
@@ -111,7 +281,7 @@
     "persona": 2,
     "tipo": "tarjeta",
     "estado": "activa",
-    "fecha_emision": "2026-11-24"
+    "fecha_emision": "2026-11-25"
   }
 },
 {
@@ -122,7 +292,7 @@
     "persona": 2,
     "tipo": "llavero",
     "estado": "activa",
-    "fecha_emision": "2026-11-24"
+    "fecha_emision": "2026-11-25"
   }
 },
 {
@@ -133,7 +303,7 @@
     "persona": 3,
     "tipo": "tarjeta",
     "estado": "activa",
-    "fecha_emision": "2026-11-24"
+    "fecha_emision": "2026-11-25"
   }
 },
 {
@@ -144,7 +314,7 @@
     "persona": 4,
     "tipo": "tarjeta",
     "estado": "activa",
-    "fecha_emision": "2026-11-24"
+    "fecha_emision": "2026-11-25"
   }
 },
 {
@@ -155,7 +325,7 @@
     "persona": 5,
     "tipo": "tarjeta",
     "estado": "activa",
-    "fecha_emision": "2026-11-24"
+    "fecha_emision": "2026-11-25"
   }
 },
 {
@@ -166,7 +336,7 @@
     "persona": 6,
     "tipo": "llavero",
     "estado": "activa",
-    "fecha_emision": "2026-11-24"
+    "fecha_emision": "2026-11-25"
   }
 },
 {
@@ -177,7 +347,7 @@
     "persona": 7,
     "tipo": "tarjeta",
     "estado": "activa",
-    "fecha_emision": "2026-11-24"
+    "fecha_emision": "2026-11-25"
   }
 },
 {
@@ -188,7 +358,7 @@
     "persona": 8,
     "tipo": "tarjeta",
     "estado": "bloqueada",
-    "fecha_emision": "2026-11-24"
+    "fecha_emision": "2026-11-25"
   }
 },
 {
@@ -199,7 +369,7 @@
     "persona": 1,
     "tipo": "tarjeta",
     "estado": "activa",
-    "fecha_emision": "2026-11-24"
+    "fecha_emision": "2026-11-25"
   }
 },
 {
@@ -213,7 +383,7 @@
     "latitud": "-33.456900",
     "longitud": "-70.597800",
     "activo": true,
-    "creado_en": "2026-11-24T19:11:03.503Z"
+    "creado_en": "2026-11-26T02:51:36.849Z"
   }
 },
 {
@@ -227,7 +397,7 @@
     "latitud": "-33.489100",
     "longitud": "-70.548300",
     "activo": true,
-    "creado_en": "2026-11-24T19:11:03.504Z"
+    "creado_en": "2026-11-26T02:51:36.850Z"
   }
 },
 {
@@ -509,7 +679,7 @@
     "vivienda": 1,
     "rol": 1,
     "otorgada_por": null,
-    "fecha_inicio": "2026-11-24",
+    "fecha_inicio": "2026-11-25",
     "fecha_fin": null,
     "activa": true
   }
@@ -523,7 +693,7 @@
     "vivienda": 2,
     "rol": 1,
     "otorgada_por": null,
-    "fecha_inicio": "2026-11-24",
+    "fecha_inicio": "2026-11-25",
     "fecha_fin": null,
     "activa": true
   }
@@ -537,7 +707,7 @@
     "vivienda": 1,
     "rol": 3,
     "otorgada_por": 2,
-    "fecha_inicio": "2026-11-24",
+    "fecha_inicio": "2026-11-25",
     "fecha_fin": null,
     "activa": true
   }
@@ -551,7 +721,7 @@
     "vivienda": 5,
     "rol": 1,
     "otorgada_por": null,
-    "fecha_inicio": "2026-11-24",
+    "fecha_inicio": "2026-11-25",
     "fecha_fin": null,
     "activa": true
   }
@@ -565,7 +735,7 @@
     "vivienda": null,
     "rol": 5,
     "otorgada_por": 1,
-    "fecha_inicio": "2026-11-24",
+    "fecha_inicio": "2026-11-25",
     "fecha_fin": null,
     "activa": true
   }
@@ -579,7 +749,7 @@
     "vivienda": 4,
     "rol": 1,
     "otorgada_por": null,
-    "fecha_inicio": "2026-11-24",
+    "fecha_inicio": "2026-11-25",
     "fecha_fin": null,
     "activa": true
   }
@@ -593,7 +763,7 @@
     "vivienda": 4,
     "rol": 4,
     "otorgada_por": 5,
-    "fecha_inicio": "2026-11-24",
+    "fecha_inicio": "2026-11-25",
     "fecha_fin": null,
     "activa": true
   }
@@ -607,7 +777,7 @@
     "vivienda": 3,
     "rol": 1,
     "otorgada_por": null,
-    "fecha_inicio": "2026-11-24",
+    "fecha_inicio": "2026-11-25",
     "fecha_fin": null,
     "activa": true
   }
@@ -621,8 +791,8 @@
     "vivienda": 3,
     "rol": 3,
     "otorgada_por": 7,
-    "fecha_inicio": "2025-11-24",
-    "fecha_fin": "2026-11-14",
+    "fecha_inicio": "2025-11-25",
+    "fecha_fin": "2026-11-15",
     "activa": true
   }
 },
@@ -854,7 +1024,7 @@
   "model": "accesos.registroacceso",
   "pk": 1,
   "fields": {
-    "fecha_hora": "2026-11-23T10:55:00Z",
+    "fecha_hora": "2026-11-24T10:55:00Z",
     "punto_acceso": 1,
     "sentido": "entrada",
     "medio": "rfid",
@@ -871,7 +1041,7 @@
   "model": "accesos.registroacceso",
   "pk": 2,
   "fields": {
-    "fecha_hora": "2026-11-23T11:02:00Z",
+    "fecha_hora": "2026-11-24T11:02:00Z",
     "punto_acceso": 5,
     "sentido": "entrada",
     "medio": "rfid",
@@ -888,7 +1058,7 @@
   "model": "accesos.registroacceso",
   "pk": 3,
   "fields": {
-    "fecha_hora": "2026-11-23T11:30:00Z",
+    "fecha_hora": "2026-11-24T11:30:00Z",
     "punto_acceso": 2,
     "sentido": "entrada",
     "medio": "rfid",
@@ -905,7 +1075,7 @@
   "model": "accesos.registroacceso",
   "pk": 4,
   "fields": {
-    "fecha_hora": "2026-11-23T11:45:00Z",
+    "fecha_hora": "2026-11-24T11:45:00Z",
     "punto_acceso": 6,
     "sentido": "salida",
     "medio": "rfid",
@@ -922,7 +1092,7 @@
   "model": "accesos.registroacceso",
   "pk": 5,
   "fields": {
-    "fecha_hora": "2026-11-23T12:10:00Z",
+    "fecha_hora": "2026-11-24T12:10:00Z",
     "punto_acceso": 2,
     "sentido": "entrada",
     "medio": "app",
@@ -939,7 +1109,7 @@
   "model": "accesos.registroacceso",
   "pk": 6,
   "fields": {
-    "fecha_hora": "2026-11-23T16:20:00Z",
+    "fecha_hora": "2026-11-24T16:20:00Z",
     "punto_acceso": 1,
     "sentido": "entrada",
     "medio": "rfid",
@@ -956,7 +1126,7 @@
   "model": "accesos.registroacceso",
   "pk": 7,
   "fields": {
-    "fecha_hora": "2026-11-23T17:05:00Z",
+    "fecha_hora": "2026-11-24T17:05:00Z",
     "punto_acceso": 1,
     "sentido": "entrada",
     "medio": "rfid",
@@ -973,7 +1143,7 @@
   "model": "accesos.registroacceso",
   "pk": 8,
   "fields": {
-    "fecha_hora": "2026-11-23T17:07:00Z",
+    "fecha_hora": "2026-11-24T17:07:00Z",
     "punto_acceso": 1,
     "sentido": "entrada",
     "medio": "app",
@@ -990,7 +1160,7 @@
   "model": "accesos.registroacceso",
   "pk": 9,
   "fields": {
-    "fecha_hora": "2026-11-23T21:40:00Z",
+    "fecha_hora": "2026-11-24T21:40:00Z",
     "punto_acceso": 9,
     "sentido": "entrada",
     "medio": "rfid",
@@ -1007,7 +1177,7 @@
   "model": "accesos.registroacceso",
   "pk": 10,
   "fields": {
-    "fecha_hora": "2026-11-23T21:41:00Z",
+    "fecha_hora": "2026-11-24T21:41:00Z",
     "punto_acceso": 10,
     "sentido": "entrada",
     "medio": "rfid",
@@ -1024,7 +1194,7 @@
   "model": "accesos.registroacceso",
   "pk": 11,
   "fields": {
-    "fecha_hora": "2026-11-23T22:15:00Z",
+    "fecha_hora": "2026-11-24T22:15:00Z",
     "punto_acceso": 8,
     "sentido": "entrada",
     "medio": "app",
@@ -1041,7 +1211,7 @@
   "model": "accesos.registroacceso",
   "pk": 12,
   "fields": {
-    "fecha_hora": "2026-11-23T23:00:00Z",
+    "fecha_hora": "2026-11-24T23:00:00Z",
     "punto_acceso": 8,
     "sentido": "entrada",
     "medio": "app",
@@ -1058,7 +1228,7 @@
   "model": "accesos.registroacceso",
   "pk": 13,
   "fields": {
-    "fecha_hora": "2026-11-24T00:30:00Z",
+    "fecha_hora": "2026-11-25T00:30:00Z",
     "punto_acceso": 9,
     "sentido": "entrada",
     "medio": "app",
@@ -1076,7 +1246,7 @@
   "pk": 1,
   "fields": {
     "registro": 1,
-    "fecha_hora": "2026-11-23T10:55:02Z",
+    "fecha_hora": "2026-11-24T10:55:02Z",
     "estado": "abrio"
   }
 },
@@ -1085,7 +1255,7 @@
   "pk": 2,
   "fields": {
     "registro": 2,
-    "fecha_hora": "2026-11-23T11:02:02Z",
+    "fecha_hora": "2026-11-24T11:02:02Z",
     "estado": "abrio"
   }
 },
@@ -1094,7 +1264,7 @@
   "pk": 3,
   "fields": {
     "registro": 4,
-    "fecha_hora": "2026-11-23T11:45:02Z",
+    "fecha_hora": "2026-11-24T11:45:02Z",
     "estado": "abrio"
   }
 },
@@ -1103,7 +1273,7 @@
   "pk": 4,
   "fields": {
     "registro": 5,
-    "fecha_hora": "2026-11-23T12:10:02Z",
+    "fecha_hora": "2026-11-24T12:10:02Z",
     "estado": "sin_respuesta"
   }
 },
@@ -1112,7 +1282,7 @@
   "pk": 5,
   "fields": {
     "registro": 9,
-    "fecha_hora": "2026-11-23T21:40:02Z",
+    "fecha_hora": "2026-11-24T21:40:02Z",
     "estado": "abrio"
   }
 },
@@ -1121,7 +1291,7 @@
   "pk": 6,
   "fields": {
     "registro": 10,
-    "fecha_hora": "2026-11-23T21:41:02Z",
+    "fecha_hora": "2026-11-24T21:41:02Z",
     "estado": "abrio"
   }
 },
@@ -1130,7 +1300,7 @@
   "pk": 7,
   "fields": {
     "registro": 12,
-    "fecha_hora": "2026-11-23T23:00:02Z",
+    "fecha_hora": "2026-11-24T23:00:02Z",
     "estado": "abrio"
   }
 }
