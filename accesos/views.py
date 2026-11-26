@@ -3,20 +3,22 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
+from config.permisos import AlcanceMixin, PuntoAccesoPolitica
 from config.protegido import BorradoProtegidoMixin
 
 from .models import PuntoAcceso
 from .serializers import PuntoAccesoSerializer
 
 
-class PuntoAccesoViewSet(BorradoProtegidoMixin, ModelViewSet):
-    """CRUD de puntos de acceso.
+class PuntoAccesoViewSet(AlcanceMixin, BorradoProtegidoMixin, ModelViewSet):
+    """CRUD de puntos de acceso (requiere token JWT).
 
     Filtros: ?terreno=<id>, ?edificio=<id>, ?vivienda=<id>, ?tipo=peatonal|vehicular|puerta,
     ?ambito=terreno|edificio|vivienda, ?activo=true|false, ?buscar=texto (nombre).
     """
 
     serializer_class = PuntoAccesoSerializer
+    politica = PuntoAccesoPolitica()
 
     def get_queryset(self):
         qs = PuntoAcceso.objects.select_related("terreno", "edificio", "vivienda").prefetch_related(
@@ -37,7 +39,7 @@ class PuntoAccesoViewSet(BorradoProtegidoMixin, ModelViewSet):
             qs = qs.filter(activo=(p["activo"] == "true"))
         if p.get("buscar"):
             qs = qs.filter(Q(nombre__icontains=p["buscar"]))
-        return qs
+        return self.limitar_alcance(qs)
 
     def destroy(self, request, *args, **kwargs):
         punto = self.get_object()
