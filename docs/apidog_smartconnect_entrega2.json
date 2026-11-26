@@ -1,0 +1,3813 @@
+{
+  "info": {
+    "name": "SmartConnect · Entrega 2 (4 CRUD, operación del negocio y JWT)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Antes de empezar: python manage.py cargar_datos --reset y python manage.py runserver. Ejecutar cada carpeta EN ORDEN. Cada carpeta empieza con un login que guarda el token en {{access}}. Cuentas de prueba: ana, benja, carlos, sofi, pedro, ema, vale, lucas y soporte; clave smart1234."
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000"
+    },
+    {
+      "key": "access",
+      "value": ""
+    },
+    {
+      "key": "refresh",
+      "value": ""
+    },
+    {
+      "key": "terreno_id",
+      "value": ""
+    },
+    {
+      "key": "punto_id",
+      "value": ""
+    },
+    {
+      "key": "asignacion_id",
+      "value": ""
+    },
+    {
+      "key": "persona_id",
+      "value": "9"
+    },
+    {
+      "key": "vivienda_id",
+      "value": "6"
+    },
+    {
+      "key": "casa_id",
+      "value": "7"
+    }
+  ],
+  "item": [
+    {
+      "name": "A · Login y JWT",
+      "item": [
+        {
+          "name": "01 Login (ana)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/token/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "token"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"ana\",\n  \"password\": \"smart1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.collectionVariables.set(\"access\", j.access);",
+                  "  pm.collectionVariables.set(\"refresh\", j.refresh);",
+                  "  pm.test(\"Devuelve access y refresh\", function () { pm.expect(j.access && j.refresh).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 Login con clave incorrecta",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/token/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "token"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"ana\",\n  \"password\": \"incorrecta\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 401\", function () { pm.response.to.have.status(401); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 Renovar el access con el refresh",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/token/refresh/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "token",
+                "refresh"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh\": \"{{refresh}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.collectionVariables.set(\"access\", j.access);",
+                  "  pm.test(\"Devuelve un access nuevo\", function () { pm.expect(j.access).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 Ruta protegida CON token (viviendas de Ana)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/viviendas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "viviendas"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.test(\"Devuelve 2 registro(s)\", function () { pm.expect(Array.isArray(j) && j.length === 2).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 Ruta protegida SIN token",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/viviendas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "viviendas"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 401\", function () { pm.response.to.have.status(401); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 Ruta protegida con token inválido",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer abc.def.ghi"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/viviendas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "viviendas"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 401\", function () { pm.response.to.have.status(401); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "B · CRUD Terrenos (personal)",
+      "item": [
+        {
+          "name": "01 Login (soporte)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/token/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "token"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"soporte\",\n  \"password\": \"smart1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.collectionVariables.set(\"access\", j.access);",
+                  "  pm.collectionVariables.set(\"refresh\", j.refresh);",
+                  "  pm.test(\"Devuelve access y refresh\", function () { pm.expect(j.access && j.refresh).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 Listar terrenos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/terrenos/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "terrenos"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.test(\"Devuelve 2 registro(s)\", function () { pm.expect(Array.isArray(j) && j.length === 2).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 Buscar terrenos (?buscar=bosque)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/terrenos/?buscar=bosque",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "terrenos"
+              ],
+              "query": [
+                {
+                  "key": "buscar",
+                  "value": "bosque"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.test(\"Devuelve 1 registro(s)\", function () { pm.expect(Array.isArray(j) && j.length === 1).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 Crear terreno",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/terrenos/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "terrenos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"tr-lagos\",\n  \"nombre\": \"Condominio Los Lagos\",\n  \"direccion\": \"Av. Los Lagos 45, Macul\",\n  \"administrador\": 2,\n  \"latitud\": \"-33.500000\",\n  \"longitud\": \"-70.600000\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 201\", function () { pm.response.to.have.status(201); });",
+                  "if (pm.response.code === 201) {",
+                  "  var j = pm.response.json();",
+                  "  pm.collectionVariables.set(\"terreno_id\", j.id);",
+                  "  pm.test(\"Código normalizado a mayúsculas\", function () { pm.expect(j.codigo === \"TR-LAGOS\").to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 Detalle del terreno",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/terrenos/{{terreno_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "terrenos",
+                "{{terreno_id}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 Actualizar terreno completo (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/terrenos/{{terreno_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "terrenos",
+                "{{terreno_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"TR-LAGOS\",\n  \"nombre\": \"Condominio Los Lagos II\",\n  \"direccion\": \"Av. Los Lagos 45, Macul\",\n  \"administrador\": 1,\n  \"latitud\": \"-33.500000\",\n  \"longitud\": \"-70.600000\",\n  \"activo\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "07 Desactivar terreno (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/terrenos/{{terreno_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "terrenos",
+                "{{terreno_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"activo\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.test(\"Quedó desactivado\", function () { pm.expect(j.activo === false).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "08 Código repetido (sin distinguir mayúsculas)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/terrenos/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "terrenos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"tr-robles\",\n  \"nombre\": \"Repetido\",\n  \"direccion\": \"Calle 1\",\n  \"administrador\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "09 Latitud sin longitud",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/terrenos/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "terrenos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"TR-X\",\n  \"nombre\": \"X\",\n  \"direccion\": \"Calle 1\",\n  \"administrador\": 2,\n  \"latitud\": \"-33.4\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "10 Borrar terreno con datos relacionados",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/terrenos/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "terrenos",
+                "1"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 409\", function () { pm.response.to.have.status(409); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "11 Eliminar el terreno creado",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/terrenos/{{terreno_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "terrenos",
+                "{{terreno_id}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 204\", function () { pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "12 Detalle del terreno eliminado",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/terrenos/{{terreno_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "terrenos",
+                "{{terreno_id}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "C · CRUD Puntos de acceso (administrador)",
+      "item": [
+        {
+          "name": "01 Login (carlos)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/token/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "token"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"carlos\",\n  \"password\": \"smart1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.collectionVariables.set(\"access\", j.access);",
+                  "  pm.collectionVariables.set(\"refresh\", j.refresh);",
+                  "  pm.test(\"Devuelve access y refresh\", function () { pm.expect(j.access && j.refresh).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 Listar puntos de acceso",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/puntos-acceso/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "puntos-acceso"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.test(\"Devuelve 10 registro(s)\", function () { pm.expect(Array.isArray(j) && j.length === 10).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 Filtrar puertas de vivienda (?ambito=vivienda)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/puntos-acceso/?ambito=vivienda",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "puntos-acceso"
+              ],
+              "query": [
+                {
+                  "key": "ambito",
+                  "value": "vivienda"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.test(\"Devuelve 3 registro(s)\", function () { pm.expect(Array.isArray(j) && j.length === 3).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 Crear punto en el terreno",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/puntos-acceso/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "puntos-acceso"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Portón Oeste\",\n  \"tipo\": \"vehicular\",\n  \"terreno\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 201\", function () { pm.response.to.have.status(201); });",
+                  "if (pm.response.code === 201) {",
+                  "  var j = pm.response.json();",
+                  "  pm.collectionVariables.set(\"punto_id\", j.id);",
+                  "  pm.test(\"Es una entrada compartida\", function () { pm.expect(j.ambito === \"terreno\").to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 Detalle del punto",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/puntos-acceso/{{punto_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "puntos-acceso",
+                "{{punto_id}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 Actualizar punto completo (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/puntos-acceso/{{punto_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "puntos-acceso",
+                "{{punto_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Portón Poniente\",\n  \"tipo\": \"vehicular\",\n  \"terreno\": 1,\n  \"activo\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "07 Desactivar punto (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/puntos-acceso/{{punto_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "puntos-acceso",
+                "{{punto_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"activo\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "08 Edificio y vivienda a la vez",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/puntos-acceso/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "puntos-acceso"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"X\",\n  \"tipo\": \"puerta\",\n  \"terreno\": 1,\n  \"edificio\": 1,\n  \"vivienda\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "09 Edificio de otro terreno",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/puntos-acceso/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "puntos-acceso"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"X\",\n  \"tipo\": \"puerta\",\n  \"terreno\": 2,\n  \"edificio\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "10 Borrar punto asignado a autorizaciones",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/puntos-acceso/3/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "puntos-acceso",
+                "3"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 409\", function () { pm.response.to.have.status(409); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "11 Eliminar el punto creado",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/puntos-acceso/{{punto_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "puntos-acceso",
+                "{{punto_id}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 204\", function () { pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "12 Detalle del punto eliminado",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/puntos-acceso/{{punto_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "puntos-acceso",
+                "{{punto_id}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "D · Operación: asignar persona a vivienda",
+      "item": [
+        {
+          "name": "01 Login (ana, propietaria admin de A-101 y A-102)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/token/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "token"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"ana\",\n  \"password\": \"smart1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.collectionVariables.set(\"access\", j.access);",
+                  "  pm.collectionVariables.set(\"refresh\", j.refresh);",
+                  "  pm.test(\"Devuelve access y refresh\", function () { pm.expect(j.access && j.refresh).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 Asignar a Lucas como residente de A-102",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/asignaciones/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "asignaciones"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"persona\": 8,\n  \"vivienda\": 2,\n  \"rol\": \"residente\",\n  \"puntos_acceso\": [\n    1,\n    7\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 201\", function () { pm.response.to.have.status(201); });",
+                  "if (pm.response.code === 201) {",
+                  "  var j = pm.response.json();",
+                  "  pm.collectionVariables.set(\"asignacion_id\", j.id);",
+                  "  pm.test(\"Queda como residente y otorgada por Ana\", function () { pm.expect(j.rol === \"residente\" && j.otorgada_por_nombre === \"Ana Rojas Pinto\").to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 Rechazo: asignación duplicada",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/asignaciones/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "asignaciones"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"persona\": 8,\n  \"vivienda\": 2,\n  \"rol\": \"residente\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 Rechazo: persona ya vinculada (Benjamín en A-101)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/asignaciones/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "asignaciones"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"persona\": 3,\n  \"vivienda\": 1,\n  \"rol\": \"residente\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 Rechazo: rol del terreno (trabajador)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/asignaciones/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "asignaciones"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"persona\": 4,\n  \"vivienda\": 2,\n  \"rol\": \"trabajador\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 Rechazo: segundo propietario administrador",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/asignaciones/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "asignaciones"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"persona\": 4,\n  \"vivienda\": 2,\n  \"rol\": \"propietario_admin\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "07 Rechazo: puerta de otra vivienda",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/asignaciones/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "asignaciones"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"persona\": 4,\n  \"vivienda\": 2,\n  \"rol\": \"residente\",\n  \"puntos_acceso\": [\n    6\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "08 403: vivienda que Ana no administra (B-201)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/asignaciones/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "asignaciones"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"persona\": 4,\n  \"vivienda\": 3,\n  \"rol\": \"residente\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 403\", function () { pm.response.to.have.status(403); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "09 Listar asignaciones visibles para Ana",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/asignaciones/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "asignaciones"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.test(\"Devuelve 4 registro(s)\", function () { pm.expect(Array.isArray(j) && j.length === 4).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "10 Detalle de la asignación creada",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/asignaciones/{{asignacion_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "asignaciones",
+                "{{asignacion_id}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "11 Login (benja, arrendatario de A-101)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/token/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "token"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"benja\",\n  \"password\": \"smart1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.collectionVariables.set(\"access\", j.access);",
+                  "  pm.collectionVariables.set(\"refresh\", j.refresh);",
+                  "  pm.test(\"Devuelve access y refresh\", function () { pm.expect(j.access && j.refresh).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "12 403: un arrendatario intenta asignar",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/asignaciones/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "asignaciones"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"persona\": 4,\n  \"vivienda\": 1,\n  \"rol\": \"residente\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 403\", function () { pm.response.to.have.status(403); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "13 Login (ana)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/token/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "token"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"ana\",\n  \"password\": \"smart1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.collectionVariables.set(\"access\", j.access);",
+                  "  pm.collectionVariables.set(\"refresh\", j.refresh);",
+                  "  pm.test(\"Devuelve access y refresh\", function () { pm.expect(j.access && j.refresh).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "14 Revocar la asignación",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/asignaciones/{{asignacion_id}}/revocar/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "asignaciones",
+                "{{asignacion_id}}",
+                "revocar"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.test(\"Quedó revocada (activa = false)\", function () { pm.expect(j.activa === false).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "15 Rechazo: revocar de nuevo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/asignaciones/{{asignacion_id}}/revocar/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "asignaciones",
+                "{{asignacion_id}}",
+                "revocar"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "E · Permisos: 401 y 403",
+      "item": [
+        {
+          "name": "01 Login (pedro, solo tiene la Casa 7)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/token/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "token"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"pedro\",\n  \"password\": \"smart1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.collectionVariables.set(\"access\", j.access);",
+                  "  pm.collectionVariables.set(\"refresh\", j.refresh);",
+                  "  pm.test(\"Devuelve access y refresh\", function () { pm.expect(j.access && j.refresh).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 Sus viviendas (solo la Casa 7)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/viviendas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "viviendas"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.test(\"Devuelve 1 registro(s)\", function () { pm.expect(Array.isArray(j) && j.length === 1).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 403: vivienda de otra persona (A-101)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/viviendas/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "viviendas",
+                "1"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 403\", function () { pm.response.to.have.status(403); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 403: terreno donde no tiene vínculo (Los Robles)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/terrenos/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "terrenos",
+                "1"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 403\", function () { pm.response.to.have.status(403); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 Login (ana)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/token/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "token"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"ana\",\n  \"password\": \"smart1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.collectionVariables.set(\"access\", j.access);",
+                  "  pm.collectionVariables.set(\"refresh\", j.refresh);",
+                  "  pm.test(\"Devuelve access y refresh\", function () { pm.expect(j.access && j.refresh).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 403: crear un terreno (solo el personal)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/terrenos/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "terrenos"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"TR-X\",\n  \"nombre\": \"X\",\n  \"direccion\": \"Y\",\n  \"administrador\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 403\", function () { pm.response.to.have.status(403); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "07 403: modificar su vivienda (solo administra las personas)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/viviendas/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "viviendas",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"activa\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 403\", function () { pm.response.to.have.status(403); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "08 Login (sofi, trabajadora)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/token/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "token"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"sofi\",\n  \"password\": \"smart1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.collectionVariables.set(\"access\", j.access);",
+                  "  pm.collectionVariables.set(\"refresh\", j.refresh);",
+                  "  pm.test(\"Devuelve access y refresh\", function () { pm.expect(j.access && j.refresh).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "09 403: una trabajadora modifica un punto de acceso",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/puntos-acceso/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "puntos-acceso",
+                "1"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"activo\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 403\", function () { pm.response.to.have.status(403); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "10 401: asignar sin token",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/asignaciones/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "asignaciones"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"persona\": 4,\n  \"vivienda\": 1,\n  \"rol\": \"residente\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 401\", function () { pm.response.to.have.status(401); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "F · CRUD Personas (Matias Cavieres, con token)",
+      "item": [
+        {
+          "name": "00 Login (soporte)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/token/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "token"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"soporte\",\n  \"password\": \"smart1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.collectionVariables.set(\"access\", j.access);",
+                  "  pm.collectionVariables.set(\"refresh\", j.refresh);",
+                  "  pm.test(\"Devuelve access y refresh\", function () { pm.expect(j.access && j.refresh).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "01 Listar personas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/personas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "personas"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 Buscar personas (?buscar=fuentes)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/personas/?buscar=fuentes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "personas"
+              ],
+              "query": [
+                {
+                  "key": "buscar",
+                  "value": "fuentes"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 Crear persona",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/personas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "personas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rut\": \"18765432-7\",\n  \"nombres\": \"Marta\",\n  \"apellidos\": \"Lillo Fuentes\",\n  \"email\": \"marta@smartconnect.test\",\n  \"telefono\": \"+56 9 1234 5678\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 201\", function () { pm.response.to.have.status(201); });",
+                  "if (pm.response.code === 201) { pm.collectionVariables.set(\"persona_id\", pm.response.json().id); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 Detalle persona",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/personas/{{persona_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "personas",
+                "{{persona_id}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 Actualizar persona completa (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/personas/{{persona_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "personas",
+                "{{persona_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rut\": \"18765432-7\",\n  \"nombres\": \"Marta Inés\",\n  \"apellidos\": \"Lillo Fuentes\",\n  \"email\": \"marta@smartconnect.test\",\n  \"telefono\": \"+56 9 8765 4321\",\n  \"activo\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 Cambiar solo el teléfono (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/personas/{{persona_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "personas",
+                "{{persona_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"telefono\": \"+56 9 1111 2222\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "07 Eliminar persona",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/personas/{{persona_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "personas",
+                "{{persona_id}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 204\", function () { pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "08 Detalle después de eliminar (404)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/personas/{{persona_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "personas",
+                "{{persona_id}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "09 Error: RUT con dígito verificador inválido (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/personas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "personas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rut\": \"18765432-1\",\n  \"nombres\": \"Marta\",\n  \"apellidos\": \"Lillo Fuentes\",\n  \"email\": \"otra@smartconnect.test\",\n  \"telefono\": \"+56 9 1234 5678\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "10 Error: RUT repetido (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/personas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "personas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rut\": \"12.345.678-5\",\n  \"nombres\": \"Marta\",\n  \"apellidos\": \"Lillo Fuentes\",\n  \"email\": \"otra@smartconnect.test\",\n  \"telefono\": \"+56 9 1234 5678\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "11 Error: borrar persona con relaciones (409)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/personas/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "personas",
+                "1"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 409\", function () { pm.response.to.have.status(409); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "G · CRUD Viviendas (Matias Quiroz, con token)",
+      "item": [
+        {
+          "name": "00 Login (soporte)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/token/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "token"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"soporte\",\n  \"password\": \"smart1234\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });",
+                  "if (pm.response.code === 200) {",
+                  "  var j = pm.response.json();",
+                  "  pm.collectionVariables.set(\"access\", j.access);",
+                  "  pm.collectionVariables.set(\"refresh\", j.refresh);",
+                  "  pm.test(\"Devuelve access y refresh\", function () { pm.expect(j.access && j.refresh).to.be.ok; });",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "01 Listar viviendas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/viviendas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "viviendas"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "02 Filtrar casas (?tipo=casa)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/viviendas/?tipo=casa",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "viviendas"
+              ],
+              "query": [
+                {
+                  "key": "tipo",
+                  "value": "casa"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "03 Crear departamento",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/viviendas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "viviendas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"LR-A-103\",\n  \"tipo\": \"departamento\",\n  \"numero\": \"103\",\n  \"terreno\": 1,\n  \"edificio\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 201\", function () { pm.response.to.have.status(201); });",
+                  "if (pm.response.code === 201) { pm.collectionVariables.set(\"vivienda_id\", pm.response.json().id); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "04 Detalle vivienda",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/viviendas/{{vivienda_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "viviendas",
+                "{{vivienda_id}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "05 Actualizar vivienda completa (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/viviendas/{{vivienda_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "viviendas",
+                "{{vivienda_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"LR-A-104\",\n  \"tipo\": \"departamento\",\n  \"numero\": \"104\",\n  \"terreno\": 1,\n  \"edificio\": 1,\n  \"activa\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "06 Desactivar vivienda (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/viviendas/{{vivienda_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "viviendas",
+                "{{vivienda_id}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"activa\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 200\", function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "07 Eliminar vivienda",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/viviendas/{{vivienda_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "viviendas",
+                "{{vivienda_id}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 204\", function () { pm.response.to.have.status(204); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "08 Detalle después de eliminar (404)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/viviendas/{{vivienda_id}}/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "viviendas",
+                "{{vivienda_id}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 404\", function () { pm.response.to.have.status(404); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "09 Crear casa (sin edificio)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/viviendas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "viviendas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"EB-C-09\",\n  \"tipo\": \"casa\",\n  \"numero\": \"9\",\n  \"terreno\": 2\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 201\", function () { pm.response.to.have.status(201); });",
+                  "if (pm.response.code === 201) { pm.collectionVariables.set(\"casa_id\", pm.response.json().id); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "10 Error: casa con edificio (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/viviendas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "viviendas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"EB-C-10\",\n  \"tipo\": \"casa\",\n  \"numero\": \"10\",\n  \"terreno\": 1,\n  \"edificio\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "11 Error: departamento sin edificio (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/viviendas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "viviendas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"LR-X-01\",\n  \"tipo\": \"departamento\",\n  \"numero\": \"1\",\n  \"terreno\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "12 Error: edificio de otro terreno (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/viviendas/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "viviendas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"codigo\": \"EB-X-01\",\n  \"tipo\": \"departamento\",\n  \"numero\": \"1\",\n  \"terreno\": 2,\n  \"edificio\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 400\", function () { pm.response.to.have.status(400); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "13 Error: borrar vivienda con personas (409)",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{access}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/viviendas/1/",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "viviendas",
+                "1"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Responde 409\", function () { pm.response.to.have.status(409); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
