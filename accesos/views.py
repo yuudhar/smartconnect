@@ -1,13 +1,14 @@
 from django.db.models import Q
-from rest_framework import status
+from rest_framework import mixins, status
+from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import GenericViewSet, ModelViewSet
 
-from config.permisos import AlcanceMixin, PuntoAccesoPolitica
+from config.permisos import AlcanceMixin, AsignacionPolitica, PuntoAccesoPolitica
 from config.protegido import BorradoProtegidoMixin
 
-from .models import PuntoAcceso
-from .serializers import PuntoAccesoSerializer
+from .models import Autorizacion, PuntoAcceso
+from .serializers import AsignacionSerializer, PuntoAccesoSerializer
 
 
 class PuntoAccesoViewSet(AlcanceMixin, BorradoProtegidoMixin, ModelViewSet):
@@ -51,3 +52,43 @@ class PuntoAccesoViewSet(AlcanceMixin, BorradoProtegidoMixin, ModelViewSet):
                 status=status.HTTP_409_CONFLICT,
             )
         return super().destroy(request, *args, **kwargs)  # si tiene historial, el mixin responde 409
+
+
+class AsignacionViewSet(AlcanceMixin, mixins.CreateModelMixin, mixins.ListModelMixin,
+                        mixins.RetrieveModelMixin, GenericViewSet):
+    """Operación del negocio: asignar una persona a una vivienda con su tipo de participación.
+
+    POST /api/asignaciones/                 asigna (solo el propietario administrador de esa vivienda)
+    GET  /api/asignaciones/                 lista las asignaciones que el solicitante puede ver
+    GET  /api/asignaciones/{id}/            detalle
+    POST /api/asignaciones/{id}/revocar/    termina la asignación (queda en el historial, activa = false)
+
+    Filtros: ?vivienda=<id>, ?persona=<id>, ?rol=<nombre>, ?activa=true|false.
+    No hay PUT, PATCH ni DELETE: una asignación no se edita ni se borra, se revoca.
+    """
+
+    serializer_class = AsignacionSerializer
+    politica = AsignacionPolitica()
+
+    def get_queryset(self):
+        qs = (Autorizacion.objects.filter(vivienda__isnull=False)
+              .select_related("persona", "vivienda", "terreno", "rol", "otorgada_por")
+              .prefetch_related("puntos").order_by("id"))
+        p = self.request.query_params
+        for campo in ("vivienda", "persona"):
+            if p.get(campo, "").isdigit():
+                qs = qs.filter(**{f"{campo}_id": int(p[campo])})
+        if p.get("rol"):
+            qs = qs.filter(rol__nombre=p["rol"])
+        if p.get("activa") in ("true", "false"):
+            qs = qs.filter(activa=(p["activa"] == "true"))
+        return self.limitar_alcance(qs)
+
+    @action(detail=True, methods=["post"])
+    def revocar(self, request, pk=None):
+        asignacion = self.get_object()
+        if not asignacion.activa:
+            return Response({"detail": "Esta asignación ya estaba revocada."}, status=status.HTTP_400_BAD_REQUEST)
+        asignacion.activa = False
+        asignacion.save(update_fields=["activa"])
+        return Response(self.get_serializer(asignacion).data)

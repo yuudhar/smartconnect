@@ -231,6 +231,40 @@ class PersonaPolitica(Politica):
                 raise PermissionDenied(f"Solo el personal de SmartConnect puede cambiar '{campo}'.")
 
 
+class AsignacionPolitica(Politica):
+    """Asignaciones persona-vivienda (Autorizacion con vivienda).
+
+    Asigna o revoca el personal de SmartConnect o el propietario administrador de ESA vivienda.
+    Las ven el personal, el administrador del terreno, el propietario administrador y la propia persona.
+    """
+
+    def visibles(self, user, qs):
+        if es_staff(user):
+            return qs
+        persona = persona_de(user)
+        return qs.filter(Q(persona=persona) | Q(vivienda_id__in=ids_viviendas_que_administra(user))
+                         | Q(terreno_id__in=ids_terrenos_administrados(user)))
+
+    def puede_ver(self, user, obj):
+        persona = persona_de(user)
+        return (es_staff(user) or (persona is not None and obj.persona_id == persona.pk)
+                or obj.vivienda_id in ids_viviendas_que_administra(user)
+                or obj.terreno_id in ids_terrenos_administrados(user))
+
+    def puede_modificar(self, user, obj):
+        """Revocar. A un propietario administrador solo lo revoca el personal de SmartConnect."""
+        if es_staff(user):
+            return True
+        return obj.vivienda_id in ids_viviendas_que_administra(user) and not obj.rol.puede_otorgar
+
+    def puede_crear(self, user, datos=None):
+        if es_staff(user):
+            return True
+        if datos is None:
+            return bool(ids_viviendas_que_administra(user))
+        return datos["vivienda"].pk in ids_viviendas_que_administra(user)
+
+
 # ---------------------------------------------------------------- piezas para los ViewSet
 
 
